@@ -1,9 +1,11 @@
-package carritocompras;
+package Administrador;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ProductosDAO {
 
@@ -66,6 +68,37 @@ public class ProductosDAO {
         }
     }
 
+    public static ArrayList leerDBServidor() {
+        Conexion dbConnect = new Conexion();
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try (Connection conexion = dbConnect.get_connection()) {
+            String query = "SELECT nombre,descripcion,cantidad,precioUnitario FROM productos";
+
+            ps = conexion.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            ResultSetMetaData md = rs.getMetaData();
+            int columns = md.getColumnCount();
+
+            ArrayList<String> Datos = new ArrayList<>(columns);
+
+            while (rs.next()) {
+                int i = 1;
+                while (i <= columns) {
+                    Datos.add(rs.getString(i++));
+                }
+            }
+            return Datos;
+
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
     public static void borrarDB(int idProducto) {
         Conexion dbConnect = new Conexion();
 
@@ -78,7 +111,7 @@ public class ProductosDAO {
                 ps.setInt(1, idProducto);
 
                 ps.executeUpdate();
-                
+
                 System.out.println("");
                 System.out.println("--------------------------------");
                 System.out.println("Producto eliminado correctamente");
@@ -126,4 +159,33 @@ public class ProductosDAO {
         }
 
     }
+
+    public static void restarProductosDB(String nombre) {
+
+        Conexion dbConnect = new Conexion();
+
+        try (Connection conexion = dbConnect.get_connection()) {
+            PreparedStatement ps = null;
+
+            try {
+                String query = "DELETE FROM productos WHERE idProducto = ?";
+                ps = conexion.prepareStatement(query);
+                ps.setString(1, nombre);
+
+                ps.executeUpdate();
+
+                System.out.println("");
+                System.out.println("--------------------------------");
+                System.out.println("Producto eliminado correctamente");
+                System.out.println("--------------------------------");
+                System.out.println("");
+
+            } catch (Exception e) {
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
 }

@@ -1,4 +1,4 @@
-package carritocompras;
+package Administrador;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,7 +12,7 @@ public class Conexion {
         Connection conexion = null;
         
         try {
-            conexion= DriverManager.getConnection("jdbc:mysql://localhost:3306/carritoCompras","root","Pass");
+            conexion= DriverManager.getConnection("jdbc:mysql://localhost:3306/carritoCompras","root","mickybrujo");
             
             if(conexion != null){
             }

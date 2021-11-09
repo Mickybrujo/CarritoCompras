@@ -1,15 +1,17 @@
-package carritocompras;
+package Administrador;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ProductosService {
 
     public static void crearProducto() {
         Scanner sc = new Scanner(System.in);
-        
+
         System.out.println("\nIngresa los datos del producto\n");
 
         System.out.println("Ingresa el nombre del producto");
@@ -24,7 +26,7 @@ public class ProductosService {
         System.out.println("Ingresa el precio del producto");
         double precio = sc.nextDouble();
         System.out.println("");
-        
+
         Producto producto = new Producto();
         producto.setNombre(nombre);
         producto.setDescripcion(descripcion);
@@ -36,6 +38,14 @@ public class ProductosService {
 
     public static void listarProducto() {
         ProductosDAO.leerDB();
+    }
+
+    public static ArrayList listarProductosServidor() {
+        
+        ArrayList<String> Datos = new ArrayList<>();
+        Datos = ProductosDAO.leerDBServidor();
+
+        return Datos;
     }
 
     public static void borrarProducto() {
